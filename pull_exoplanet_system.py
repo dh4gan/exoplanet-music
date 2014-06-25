@@ -5,7 +5,6 @@ def pull_exoplanet_system(xmlfile):
     jup2EarthMass = 317.83
     jup2EarthRadii = 11.22
     year = 365.24
-    pi = 3.1415925685
     
     # Read in XML file
 
@@ -39,7 +38,7 @@ def pull_exoplanet_system(xmlfile):
             periods[-1] = float(periods[-1])/year
         except:
             print "No period found"
-            periods.append(1.0)
+            return [], [], []
             
         
         try:
@@ -47,11 +46,18 @@ def pull_exoplanet_system(xmlfile):
             masses[-1] = float(masses[-1])*jup2EarthMass 
         except:
             print "No mass found for planet ", planet.findtext("./name")
+            masses.append(1.0)
             
         try:
             radii.append(planet.findtext("./radius"))
             radii[-1] = float(radii[-1])*jup2EarthRadii
         except:
             print "No radius found for planet ", planet.findtext("./name")
+            return [], [], []
+            # If no radius found, infer it from mass
+            if(masses[-1]>300):
+                radii.append(11.2)
+            else:
+                radii.append(masses[-1]**0.666)
                   
     return periods, masses, radii
