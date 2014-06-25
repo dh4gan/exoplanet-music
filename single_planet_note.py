@@ -1,5 +1,6 @@
 # Written 25/6/14 by dh4gan
-# Creates a single repeating note from an exoplanet data set
+# Creates a single repeating note from hardcoded exoplanet data
+
 from wavebender import *
 
 # Define the framerate of the file and the pitch of middle C for this sound
@@ -32,5 +33,7 @@ except ZeroDivisionError:
 channels = ((damped_wave(frequency=pitch, amplitude=0.3, framerate = 44100, length = repeatrate),),
             (damped_wave(frequency=pitch, amplitude=0.1, framerate = 44100, length=repeatrate),))
 
+
+print channels
 samples = compute_samples(channels, nsamples = fileTime*frameRate)
 write_wavefile("planet2.wav", samples)
