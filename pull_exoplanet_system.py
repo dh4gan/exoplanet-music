@@ -24,7 +24,10 @@ def pull_exoplanet_system(xmlfile):
 
     N = len(planets)
 
-    print "There are ", N, " Planets in this system"
+    if(N>1):
+        print "There are ", N, " Planets in this system"
+    else:
+        print "There is ", N, " Planet in this system"
     
     periods = []
     masses = []
