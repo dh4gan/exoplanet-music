@@ -8,7 +8,7 @@ import pull_exoplanet_system as exo
 
 # Define the framerate of the file and the pitch of middle C for this sound
 frameRate = 44100
-middleC = 500.0 
+middleC = 1000.0 
 
 # Define the limits of human hearing!
 
@@ -33,7 +33,7 @@ fileTime = 100.0
 
 pitches = []
 for i in range(len(masses)):
-    pitches.append(middleC/masses[i])
+    pitches.append(middleC/radii[i])
 
 print pitches, log10(masses)
 
@@ -46,16 +46,16 @@ for i in range(len(periods)):
 
 notes1 = []
 
-for i in range(4,6):
+for i in range(3):
     print "Creating note ",i
-    notes1.append(damped_wave(frequency=pitches[i], amplitude=0.5, framerate = frameRate, length= repeatrates[i])) 
+    notes1.append(damped_wave(frequency=pitches[i], amplitude=0.1, framerate = frameRate, length= repeatrates[i])) 
     
 channel1 = (notes1[:])
 
 notes2=[]
 
-for i in range(4,6):
-    notes2.append(damped_wave(frequency=pitches[i], amplitude=0.5, framerate = frameRate, length= repeatrates[i])) 
+for i in range(4,7):
+    notes2.append(damped_wave(frequency=pitches[i], amplitude=0.1, framerate = frameRate, length= repeatrates[i])) 
 
 channel2 = (notes2[:])
 channels = (channel1,channel2)
