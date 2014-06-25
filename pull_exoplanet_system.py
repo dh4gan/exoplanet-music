@@ -17,9 +17,7 @@ def pull_exoplanet_system(xmlfile):
     systemname =tree.findtext('name')
     print "System Name: ", systemname
 
-    # Find all Stars and Planets in File
-
-    stars = tree.findall(".//star")
+    # Find all Planets in File
     planets = tree.findall(".//planet")
 
     # Get Total Number of Bodies
@@ -35,26 +33,22 @@ def pull_exoplanet_system(xmlfile):
     for planet in planets:
         try:
             periods.append(planet.findtext("./period"))
+            periods[-1] = float(periods[-1])/year
         except:
             print "No period found"
-            periods.append("1.0")
+            periods.append(1.0)
+            
         
         try:
             masses.append(planet.findtext("./mass"))
+            masses[-1] = float(masses[-1])*jup2EarthMass 
         except:
             print "No mass found for planet ", planet.findtext("./name")
             
         try:
             radii.append(planet.findtext("./radius"))
+            radii[-1] = float(radii[-1])*jup2EarthRadii
         except:
             print "No radius found for planet ", planet.findtext("./name")
-            
-            
-    # Convert data into appropriate units
-    print type(periods[0])
-    for i in range(len(periods)):
-        periods[i] = float(periods[i])/year
-        masses[i] = float(masses[i])*jup2EarthMass 
-        radii[i] = float(radii[i])*jup2EarthRadii 
-      
+                  
     return periods, masses, radii
