@@ -52,7 +52,6 @@ while(ifile < nfiles):
         #wavfile = xmlfile.rsplit( ".", 1 )[ 0 ]+".wav"
 
 
-
     print "Reading from file ",xmlfile
     print "Writing sound to output ",wavfile
 

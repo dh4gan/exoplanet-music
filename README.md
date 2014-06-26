@@ -8,6 +8,6 @@ This code relies on the `wavebender` module to generate tones and save them to w
 
 https://github.com/zacharydenton/wavebender
 
-Exoplanet taken from a local copy of the Open Exoplanet Catalogue
+Exoplanet data taken from a local copy of the Open Exoplanet Catalogue
 (Also note that the scripts store a machine dependent directory for the catalogue!)
 
