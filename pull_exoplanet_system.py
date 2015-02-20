@@ -5,20 +5,20 @@ from wavebender import damped_wave, compute_samples, write_wavefile
 jup2EarthMass = 317.83
 jup2EarthRadii = 11.22
 year = 365.24
-
+catalogue_dir = "/Users/dhf/programs/open_exoplanet_catalogue/systems/"
 
 # Define the limits of human hearing!
 frequency_min = 50 # giant planets will reach the low frequencies
 frequency_max = 1.0e4 # low mass planets will reach these frequencies
 
 def pull_exoplanet_system(xmlfile):
-    
-
-    
+        
     # Read in XML file
 
     print "Reading file ", xmlfile
-    tree = ET.parse(xmlfile)
+    
+    filename = catalogue_dir+xmlfile
+    tree = ET.parse(filename)
 
     # Get System Name
 
@@ -118,7 +118,7 @@ def generate_notes_periods_radii(periods,radii, fileTime, wavefile, frameRate=44
     
 def generate_notes_periods_only(periods, wavefile, frameRate=44100, middleC = 1000.0):
     '''Generates a .wav file using the orbital periods alone from the exoplanet dataset'''
-    
+    # TODO - write this function!
     
 def create_wavefile(notes1,notes2, fileTime, wavefile, frameRate = 44100):
     '''Generates a wavefile given notes for channels 1 and 2'''

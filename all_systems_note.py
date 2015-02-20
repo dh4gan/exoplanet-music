@@ -2,18 +2,9 @@
 # Creates a wav file with multiple notes
 # Parses an XML file to find masses and periods
 
-from wavebender import damped_wave, compute_samples, write_wavefile
 import pull_exoplanet_system as exo
 import glob
 from os import path
-
-# Define the framerate of the file and the pitch of middle C for this sound
-frameRate = 44100
-middleC = 1000.0 
-
-# Give a path to where the exoplanet catalogue is stored
-
-catalogue_dir = "/Users/dhf/programs/open_exoplanet_catalogue/systems/"
 
 # Define the limits of human hearing!
 
@@ -34,7 +25,7 @@ radii = []
 
 wavfile = "all.wav"
 
-xmlfiles = glob.glob(catalogue_dir+"*.xml")
+xmlfiles = glob.glob(exo.catalogue_dir+"*.xml")
 
 for inputfile in xmlfiles:        
 
@@ -43,73 +34,24 @@ for inputfile in xmlfiles:
     print "Reading from file ",xmlfile
     print "Writing sound to output ",wavfile
 
-    print xmlfile, wavfile
-
-    filename = catalogue_dir+xmlfile
-
-    systemperiods,systemmasses,systemradii = exo.pull_exoplanet_system(filename)
+    systemperiods,systemmasses,systemradii = exo.pull_exoplanet_system(xmlfile)
 
     periods = periods + systemperiods
     masses = masses + systemmasses
     radii = radii+ systemradii
-    
-print periods
-print len(periods), len(masses), len(radii)
+   
+print "Number of periods collected: ",len(periods)
+print "Number of radii collected: ", len(radii) 
+print "Periods, radii collected"
 
-# TODO - Figure out what to do when exoplanet file incomplete (no radii)
+for i in range(len(periods)):
+    
+    print periods[i], radii[i]
 
 
 # How long will the file last in seconds?
-fileTime = 100.0
+fileTime = 10.0
 
-# Use this to generate a pitch
-# More massive planets have a lower pitch
+exo.generate_notes_periods_radii(periods,radii, fileTime, wavfile, frameRate=44100, middleC = 1000.0)
 
-pitches = []
-for i in range(len(radii)):
-    pitches.append(middleC/radii[i])
-    
-    # Keep the notes within human hearing!
-    if(pitches[-1]<frequency_min): pitches[-1]=frequency_min
-    if(pitches[-1]>frequency_max): pitches[-1]=frequency_max
-    
-
-# Notes per second - longer periods mean longer durations between notes
-# This normalisation means that a period of 1 year = one second between notes
-
-repeatrates = []
-for i in range(len(periods)):
-    repeatrates.append(frameRate*periods[i])
-
-notes1 = []
-notes2= []
-
-
-if(len(periods)==1):
-    notes1.append(damped_wave(frequency=pitches[i], amplitude=amplitude_tweak, framerate = frameRate, length= repeatrates[i]))
-    notes2.append(damped_wave(frequency=pitches[i], amplitude=amplitude_tweak, framerate = frameRate, length= repeatrates[i]))
-
-else:
-    for i in range(len(periods)):
-        print "Creating note ",i, "radius: ",radii[i]," pitch: ",pitches[i]
-    
-        if(radii[i]>3.0):
-            notes2.append(damped_wave(frequency=pitches[i], amplitude=amplitude_tweak, framerate = frameRate, length= repeatrates[i])) 
-        else:
-            notes1.append(damped_wave(frequency=pitches[i], amplitude=amplitude_tweak, framerate = frameRate, length= repeatrates[i])) 
-        
-channel1 = (notes1[:])   
-channel2 = (notes2[:])
-channels = (channel1,channel2)
-
-print "Channels constructed"
-
-samples = compute_samples(channels, nsamples = fileTime*frameRate)
-
-print samples
-
-print "Samples made: writing to wavefile ",wavfile
-print "This can take a while, please be patient!"
-
-write_wavefile(wavfile, samples)
-print "File written"
+# TODO - Figure out what to do when exoplanet file incomplete (no radii)
